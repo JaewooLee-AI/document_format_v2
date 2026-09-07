@@ -1,0 +1,14 @@
+venv/
+__pycache__/
+*.pyc
+.DS_Store
+.playwright-mcp/
+
+# SQLite DB — may contain LLM API keys and uploaded field data, never commit
+data/*.db
+
+# uploaded originals / generated photos — user data, not source
+storage/*/*
+!storage/*/.gitkeep
+
+scripts/_out/
