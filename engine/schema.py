@@ -49,7 +49,7 @@ MEMBER_TYPES = ["사내", "사외"]
 # ---------------------------------------------------------------------------
 MEETING_MINUTES_SCHEMA = {
     "simple_fields": [
-        {"name": "기업명", "label": "기업명", "table": 0, "row": 0, "col": 1, "kind": "text", "fixed": "주식회사 더느린걸음"},
+        {"name": "기업명", "label": "기업명", "table": 0, "row": 0, "col": 1, "kind": "text"},
         {"name": "작성일자", "label": "작성일자", "table": 0, "row": 0, "col": 3, "kind": "date"},
         {"name": "회의명", "label": "회의명(안건)", "table": 0, "row": 1, "col": 1, "kind": "text"},
         {"name": "회의일자", "label": "회의일자", "table": 0, "row": 1, "col": 3, "kind": "date"},
@@ -91,7 +91,7 @@ MEETING_MINUTES_SCHEMA = {
 # ---------------------------------------------------------------------------
 EDUCATION_REPORT_SCHEMA = {
     "simple_fields": [
-        {"name": "기업명", "label": "기업명", "table": 0, "row": 0, "col": 1, "kind": "text", "fixed": "주식회사 더느린걸음"},
+        {"name": "기업명", "label": "기업명", "table": 0, "row": 0, "col": 1, "kind": "text"},
         {"name": "보고자", "label": "보고자", "table": 0, "row": 0, "col": 3, "kind": "text"},
         {"name": "교육명", "label": "교육명", "table": 0, "row": 1, "col": 1, "kind": "text"},
         {"name": "교육기관", "label": "교육기관", "table": 0, "row": 2, "col": 1, "kind": "text"},
@@ -139,7 +139,7 @@ def _cooperation_detail_fields(slot_index, table_index):
 
 COOPERATION_REPORT_SCHEMA = {
     "simple_fields": [
-        {"name": "기업명", "label": "기업명", "table": 0, "row": 0, "col": 1, "kind": "text", "fixed": "주식회사 더느린걸음"},
+        {"name": "기업명", "label": "기업명", "table": 0, "row": 0, "col": 1, "kind": "text"},
         {"name": "작성일자", "label": "작성일자", "table": 0, "row": 0, "col": 3, "kind": "date"},
         {"name": "담당자", "label": "담당자(직책)", "table": 0, "row": 1, "col": 1, "kind": "text"},
         {"name": "협력유형", "label": "협력 유형", "table": 0, "row": 1, "col": 3, "kind": "select", "options": COOPERATION_TYPES},
@@ -171,7 +171,7 @@ COOPERATION_REPORT_SCHEMA = {
 # ---------------------------------------------------------------------------
 PERFORMANCE_REPORT_SCHEMA = {
     "simple_fields": [
-        {"name": "기업명", "label": "기업명", "table": 0, "row": 0, "col": 1, "kind": "text", "fixed": "주식회사 더느린걸음"},
+        {"name": "기업명", "label": "기업명", "table": 0, "row": 0, "col": 1, "kind": "text"},
         {"name": "작성일자", "label": "작성일자", "table": 0, "row": 0, "col": 3, "kind": "date"},
         {"name": "담당부서", "label": "담당부서", "table": 0, "row": 1, "col": 1, "kind": "text"},
         {"name": "담당자", "label": "담당자(직책)", "table": 0, "row": 1, "col": 3, "kind": "text"},
