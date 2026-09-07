@@ -5,6 +5,7 @@ from datetime import date
 import streamlit as st
 
 from db import models
+from engine.classifier import classify_document
 from engine.docx_adapter import DocxDocument
 from engine.extractor import extract
 from engine.hwpx_adapter import HwpxDocument
@@ -21,13 +22,28 @@ def _sanitize(name: str) -> str:
     return name or "문서"
 
 
-doc_type = st.selectbox(
-    "업무 종류", list(DOC_TYPES.keys()), format_func=lambda k: DOC_TYPES[k]["label"]
-)
 uploaded = st.file_uploader("hwpx 또는 docx 파일 업로드", type=["hwpx", "docx"])
 
 if uploaded is not None and "upload_pending" not in st.session_state:
     ext = uploaded.name.rsplit(".", 1)[-1].lower()
+    file_bytes = uploaded.getvalue()
+
+    classify_key = f"classified_{uploaded.name}_{uploaded.size}"
+    if classify_key not in st.session_state:
+        st.session_state[classify_key] = classify_document(file_bytes, ext)
+    suggested_type = st.session_state[classify_key]
+
+    doc_type_keys = list(DOC_TYPES.keys())
+    default_index = doc_type_keys.index(suggested_type) if suggested_type else 0
+    doc_type = st.selectbox(
+        "업무 종류", doc_type_keys, index=default_index,
+        format_func=lambda k: DOC_TYPES[k]["label"], key=f"doc_type_{uploaded.name}_{uploaded.size}",
+    )
+    if suggested_type:
+        st.caption(f"✅ 자동 분류: {DOC_TYPES[suggested_type]['label']} (다르면 위에서 변경하세요)")
+    else:
+        st.warning("자동 분류에 실패했습니다. 업무 종류를 직접 선택해주세요.")
+
     base = _sanitize(uploaded.name.rsplit(".", 1)[0])
     suggested_key = f"{doc_type}/{date.today().strftime('%Y%m%d')}_{base}"
     key_widget_id = f"new_doc_key_{doc_type}_{uploaded.name}"
@@ -39,7 +55,7 @@ if uploaded is not None and "upload_pending" not in st.session_state:
             "doc_key": st.session_state[key_widget_id],
             "ext": ext,
             "filename": uploaded.name,
-            "bytes": uploaded.getvalue(),
+            "bytes": file_bytes,
         }
         st.rerun()
 

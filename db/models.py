@@ -83,6 +83,13 @@ def update_field_data(doc_id: int, field_data: dict):
     conn.close()
 
 
+def delete_document(doc_id: int):
+    conn = get_connection()
+    with conn:
+        conn.execute("DELETE FROM documents WHERE id = ?", (doc_id,))
+    conn.close()
+
+
 def get_document(doc_id: int) -> dict:
     conn = get_connection()
     row = conn.execute("SELECT * FROM documents WHERE id = ?", (doc_id,)).fetchone()

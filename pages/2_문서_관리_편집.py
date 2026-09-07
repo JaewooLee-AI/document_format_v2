@@ -1,6 +1,7 @@
 import glob
 import io
 import os
+import shutil
 import zipfile
 
 import streamlit as st
@@ -116,3 +117,22 @@ if st.button("📤 출력 파일 생성"):
                 f"⬇️ {len(outputs)}개 파일 zip으로 다운로드", data=buf.getvalue(),
                 file_name=zip_name, key=f"doc{doc_id}_dlzip",
             )
+
+st.divider()
+with st.expander("⚠️ 문서 삭제"):
+    st.warning("삭제하면 이 문서의 데이터와 저장된 원본 파일이 모두 사라지며 되돌릴 수 없습니다.")
+    confirm = st.checkbox(
+        f"'{doc_row['doc_key']}' 문서를 삭제하는 것에 동의합니다.", key=f"doc{doc_id}_confirm_del",
+    )
+    if st.button("🗑️ 삭제", disabled=not confirm, key=f"doc{doc_id}_delete_btn"):
+        source_path = models.get_document(doc_id)["source_file_path"]
+        models.delete_document(doc_id)
+        if source_path and os.path.exists(source_path):
+            os.remove(source_path)
+        photo_dir = _photo_dir(doc_row["doc_key"])
+        if os.path.isdir(photo_dir):
+            shutil.rmtree(photo_dir)
+        for k in [state_key, photo_key]:
+            st.session_state.pop(k, None)
+        st.success(f"'{doc_row['doc_key']}' 문서를 삭제했습니다.")
+        st.rerun()
